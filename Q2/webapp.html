@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Eligibility</title>
+    <script>
+        async function checkEligibility(type) {
+            const Student_Id = document.getElementById("student_id").value;
+            if (!Student_Id) {
+                alert("Please enter a Student ID");
+                return;
+            }
+
+            const endpoint = `http://localhost:8080/${type}?id=${Student_Id}`;
+            try {
+                const response = await fetch(endpoint);
+                const result = await response.json();
+                document.getElementById("result").innerText = JSON.stringify(result, null, 2);
+            } catch (error) {
+                console.error("Error fetching data:", error);
+                alert("Not Permitted for exam");
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Student Eligibility Checker</h1>
+    <label for="student_id">Enter Student ID:</label>
+    <input type="text" id="student_id" placeholder="e.g., 101">
+    <br><br>
+    <button onclick="checkEligibility('scholarship')">Check Scholarship</button>
+    <button onclick="checkEligibility('exam')">Check Exam Permission</button>
+    <pre id="result"></pre>
+</body>
+</html>
